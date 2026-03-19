@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+venv/
+.env
+
+# Javascript / Node
+node_modules/
+dist/
+.DS_Store
+*.log
+.eslintcache
+
+# Backend Specific
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Other
+.idea/
+.vscode/
+*.swp
+*.bak
+*.tmp

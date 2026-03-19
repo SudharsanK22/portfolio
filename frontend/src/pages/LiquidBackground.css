@@ -1,0 +1,33 @@
+.liquid-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: white; /* Fallback */
+}
+
+.blobs-wrapper {
+  position: absolute;
+  inset: -50px; /* Slight overflow to hide edges of blobs */
+  background: white;
+  isolation: isolate;
+}
+
+.blob {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  filter: blur(8px);
+  /* Use a slightly off-white or very light gray for better gooey visibility against white background if needed, 
+     but for pure white-on-white gooey, we rely on the filter contrast. */
+  background: #f8fafc; 
+  opacity: 0.8;
+}
+
+/* Hide the SVG container but keep the filter ID available */
+.hidden {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
