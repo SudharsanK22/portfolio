@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
 from typing import List
 from bson import ObjectId
-from ..auth import get_current_user
-from ..database import get_database
-from ..models import HomeContent, AboutContent, Skill, Project, ContactInfo, SiteSettings
+from backend.auth import get_current_user
+from backend.database import get_database
+from backend.models import HomeContent, AboutContent, Skill, Project, ContactInfo, SiteSettings
 
 router = APIRouter(prefix="/content", tags=["content"])
 

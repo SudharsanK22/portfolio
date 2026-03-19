@@ -4,9 +4,9 @@ from fastapi.staticfiles import StaticFiles
 import shutil
 import os
 import uuid
-from .database import settings
-from .routes import auth, content
-from .auth import get_current_user
+from backend.database import settings
+from backend.routes import auth, content
+from backend.auth import get_current_user
 
 app = FastAPI(title="Dynamic Portfolio CMS API")
 
