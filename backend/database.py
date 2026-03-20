@@ -3,7 +3,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    MONGODB_URL: str = "mongodb://localhost:27017"
+    MONGODB_URL: str = "mongodb://127.0.0.1:27017"
     DATABASE_NAME: str = "portfolio_cms"
     SECRET_KEY: str = "YOUR_SUPER_SECRET_KEY_CHANGE_THIS"
     ALGORITHM: str = "HS256"
