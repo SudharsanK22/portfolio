@@ -1,17 +1,27 @@
-from fastapi import FastAPI, File, UploadFile, Depends, HTTPException
+from fastapi import FastAPI, File, UploadFile, Depends, HTTPException, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import shutil
 import os
 import uuid
-from backend.database import settings
+import logging
+from backend.database import settings, get_database
 from backend.routes import auth, content
 from backend.auth import get_current_user
+
+# Logging setup
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Dynamic Portfolio CMS API")
 
 # CORS setup
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,https://portfolio-zar3.vercel.app").split(",")
+# Always allow the production Vercel origin and local dev origin
+raw_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+allowed_origins = [origin.strip() for origin in raw_origins if origin.strip()]
+if "https://portfolio-zar3.vercel.app" not in allowed_origins:
+    allowed_origins.append("https://portfolio-zar3.vercel.app")
 
 app.add_middleware(
     CORSMiddleware,
@@ -20,6 +30,18 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.error(f"Global exception: {exc}", exc_info=True)
+    return JSONResponse(
+        status_code=500,
+        content={"detail": f"Internal Server Error: {str(exc)}"},
+        headers={
+            "Access-Control-Allow-Origin": request.headers.get("Origin", "*"),
+            "Access-Control-Allow-Credentials": "true",
+        }
+    )
 
 # Static files for uploads
 UPLOAD_DIR = "backend/uploads"
@@ -44,4 +66,13 @@ async def upload_image(file: UploadFile = File(...), current_user: dict = Depend
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok"}
+    try:
+        db = await get_database()
+        await db.command("ping")
+        return {"status": "ok", "database": "connected"}
+    except Exception as e:
+        logger.error(f"Health check failed: {e}")
+        return JSONResponse(
+            status_code=503,
+            content={"status": "error", "database": str(e)}
+        )
