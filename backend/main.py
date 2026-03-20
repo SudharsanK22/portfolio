@@ -43,6 +43,12 @@ async def global_exception_handler(request: Request, exc: Exception):
         }
     )
 
+@app.on_event("startup")
+async def startup_event():
+    logger.info(f"API starting up. ALLOWED_ORIGINS={allowed_origins}")
+    if os.getenv("RENDER"):
+        logger.info("Running on Render")
+
 # Static files for uploads
 UPLOAD_DIR = "backend/uploads"
 if not os.path.exists(UPLOAD_DIR):

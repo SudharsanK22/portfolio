@@ -14,10 +14,24 @@ class Settings(BaseSettings):
         "env_file_encoding": "utf-8"
     }
 
-settings = Settings()
+try:
+    settings = Settings()
+    print(f"Settings loaded: MONGODB_URL={settings.MONGODB_URL[:20]}...")
+except Exception as e:
+    print(f"Error loading settings: {e}")
+    # Fallback for critical settings if env fails
+    class FallbackSettings:
+        MONGODB_URL = os.getenv("MONGODB_URL", "mongodb://127.0.0.1:27017")
+        DATABASE_NAME = os.getenv("DATABASE_NAME", "portfolio_cms")
+    settings = FallbackSettings()
 
-client = AsyncIOMotorClient(settings.MONGODB_URL)
-db = client[settings.DATABASE_NAME]
+try:
+    client = AsyncIOMotorClient(settings.MONGODB_URL)
+    db = client[settings.DATABASE_NAME]
+    print("AsyncIOMotorClient initialized")
+except Exception as e:
+    print(f"Error initializing AsyncIOMotorClient: {e}")
+    db = None
 
 async def get_database():
     return db
