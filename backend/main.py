@@ -11,7 +11,7 @@ from backend.auth import get_current_user
 app = FastAPI(title="Dynamic Portfolio CMS API")
 
 # CORS setup
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,https://portfolio-zar3.vercel.app").split(",")
 
 app.add_middleware(
     CORSMiddleware,
@@ -25,13 +25,13 @@ app.add_middleware(
 UPLOAD_DIR = "backend/uploads"
 if not os.path.exists(UPLOAD_DIR):
     os.makedirs(UPLOAD_DIR)
-app.mount("/api/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
+app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
 # Include routers
-app.include_router(auth.router, prefix="/api")
-app.include_router(content.router, prefix="/api")
+app.include_router(auth.router, prefix="")
+app.include_router(content.router, prefix="")
 
-@app.post("/api/upload")
+@app.post("/upload")
 async def upload_image(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
     file_ext = file.filename.split(".")[-1]
     file_name = f"{uuid.uuid4()}.{file_ext}"
@@ -40,8 +40,8 @@ async def upload_image(file: UploadFile = File(...), current_user: dict = Depend
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
         
-    return {"url": f"/api/uploads/{file_name}"}
+    return {"url": f"/uploads/{file_name}"}
 
-@app.get("/api/health")
+@app.get("/health")
 async def health_check():
     return {"status": "ok"}
