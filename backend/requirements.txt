@@ -9,4 +9,4 @@ passlib[bcrypt]
 pymongo
 certifi
 python-dotenv
-email-validator
+dnspython
