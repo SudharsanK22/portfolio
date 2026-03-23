@@ -16,12 +16,18 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Dynamic Portfolio CMS API")
 
-# CORS setup
-# Always allow the production Vercel origin and local dev origin
+# Always allow the production Render origin and local dev origin
 raw_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
 allowed_origins = [origin.strip() for origin in raw_origins if origin.strip()]
-if "https://portfolio-zar3.vercel.app" not in allowed_origins:
-    allowed_origins.append("https://portfolio-zar3.vercel.app")
+
+# Add specific Render and Vercel domains for safety during deployment
+production_domains = [
+    "https://portfolio-zar3.vercel.app",
+    "https://portfolio-1-5ucy.onrender.com"
+]
+for domain in production_domains:
+    if domain not in allowed_origins:
+        allowed_origins.append(domain)
 
 app.add_middleware(
     CORSMiddleware,

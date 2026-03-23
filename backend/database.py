@@ -1,5 +1,6 @@
 import os
 import logging
+import certifi
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -25,10 +26,13 @@ class Settings(BaseSettings):
 try:
     settings = Settings()
     # Check if we are on Render and warn if using localhost
-    if os.getenv("RENDER") and "127.0.0.1" in settings.MONGODB_URL:
-        logger.warning("RUNNING ON RENDER BUT MONGODB_URL IS SET TO LOCALHOST! Check your environment variables.")
+    if os.getenv("RENDER"):
+        if "127.0.0.1" in settings.MONGODB_URL:
+            logger.warning("RUNNING ON RENDER BUT MONGODB_URL IS SET TO LOCALHOST! Check your environment variables.")
+        else:
+            logger.info("Running on Render with external MONGODB_URL.")
     
-    logger.info(f"Database settings loaded. URL starts with: {settings.MONGODB_URL[:25]}...")
+    logger.info(f"Database settings loaded. DATABASE_NAME={settings.DATABASE_NAME}")
 except Exception as e:
     logger.error(f"Error initializing settings: {e}")
     class FallbackSettings:
@@ -39,8 +43,13 @@ except Exception as e:
 
 # More robust client initialization
 try:
-    logger.info("Initializing AsyncIOMotorClient...")
-    client = AsyncIOMotorClient(settings.MONGODB_URL)
+    logger.info("Initializing AsyncIOMotorClient with certifi CA bundle...")
+    # Use certifi's CA bundle for secure connections to Atlas on Render/Linux
+    client = AsyncIOMotorClient(
+        settings.MONGODB_URL,
+        tlsCAFile=certifi.where(),
+        serverSelectionTimeoutMS=5000  # 5 second timeout for fail-fast
+    )
     db = client[settings.DATABASE_NAME]
     logger.info(f"Database object initialized for database: {settings.DATABASE_NAME}")
 except Exception as e:
