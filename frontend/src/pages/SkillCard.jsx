@@ -25,95 +25,72 @@ const categoryIcons = {
 };
 
 const SkillCard = ({ category, skills }) => {
-  const accent = categoryAccent[category] || categoryAccent["General"];
   const IconComp = categoryIcons[category] || categoryIcons["General"];
 
   return (
     <div className="h-full group/main">
-      <GlareCard className="h-full">
-        {/* Card body — Refined deep dark aesthetic */}
-        <div className="relative h-full bg-[#03030b] flex flex-col gap-6 p-6 rounded-[2rem] overflow-hidden border border-white/5">
+      <GlareCard className="h-full rounded-[2.5rem]">
+        {/* Card body — Deep blue backdrop with diagonal beams */}
+        <div className="relative h-full bg-[#030712] flex flex-col gap-8 p-8 rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl transition-all duration-500 group-hover/main:border-blue-500/30">
           
-          {/* Background Ambient Glow */}
-          <div 
-            className="absolute -top-24 -left-24 w-64 h-64 rounded-full blur-[100px] opacity-15 transition-opacity duration-500 group-hover/main:opacity-25"
-            style={{ background: accent }}
-          />
-
-          {/* Header Section — Scaled Down */}
-          <div className="flex items-center gap-4 relative z-10">
-            <div className="relative group">
-              <div 
-                className="absolute -inset-1.5 rounded-full blur-md opacity-10 group-hover:opacity-30 transition-opacity duration-300"
-                style={{ background: accent }}
-              />
-              <div className="relative w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-2xl shadow-xl">
-                <IconComp size={24} className="text-white/80 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
-              </div>
-            </div>
-            <h3 className="text-xl font-bold text-white tracking-widest uppercase opacity-90">{category}</h3>
+          {/* Subtle Diagonal Beam Backdrop */}
+          <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
+            <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-[linear-gradient(135deg,transparent_45%,#1e3a8a_50%,transparent_55%)] blur-3xl animate-pulse" />
           </div>
 
-          {/* Skill Capsules List — Scaled Down */}
-          <div className="space-y-4 relative z-10 flex-grow">
+          {/* Header Section — Premium Rounded Icon and Bold Title */}
+          <div className="flex items-center gap-6 relative z-10 p-2">
+            <div className="relative">
+              {/* Outer Glow Ring */}
+              <div className="absolute -inset-2 bg-blue-500/20 blur-xl rounded-full opacity-50 group-hover/main:opacity-100 transition-opacity" />
+              <div className="relative w-16 h-16 rounded-full bg-slate-800/60 border-4 border-slate-700/50 flex items-center justify-center shadow-inner">
+                <IconComp size={32} className="text-white/90 drop-shadow-md" />
+              </div>
+            </div>
+            <h3 className="text-3xl font-black text-white tracking-tight drop-shadow-sm">{category}</h3>
+          </div>
+
+          {/* Skill Items — Rounded "Capsule" Pill-Shaped Glass Items */}
+          <div className="space-y-6 relative z-10 flex-grow pb-4">
             {skills.map((skill, idx) => (
               <motion.div
                 key={skill._id || skill.id || idx}
-                initial={{ opacity: 0, x: -15 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, delay: idx * 0.08 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
                 viewport={{ once: true }}
-                className="relative group/capsule"
+                className="relative"
               >
-                {/* Compact Glass Capsule */}
-                <div className="relative overflow-hidden rounded-[1.5rem] bg-white/[0.03] border border-white/5 p-4 backdrop-blur-xl transition-all duration-500 group-hover/capsule:bg-white/[0.07] group-hover/capsule:border-white/15 group-hover/capsule:scale-[1.01] shadow-lg">
+                {/* Minimalist Glass Capsule */}
+                <div className="relative overflow-hidden rounded-full bg-[#111827]/80 border border-white/10 backdrop-blur-xl px-7 py-6 shadow-xl group/capsule hover:bg-[#1f2937] transition-colors duration-300">
                   
-                  {/* Subtle Glassy Reflection */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-transparent pointer-events-none" />
+                  {/* Subtle Gloss Highlight */}
+                  <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
                   
-                  {/* Skill Text Layer — Smaller Fonts */}
-                  <div className="flex justify-between items-center mb-3 px-1">
-                    <span className="text-[10px] font-bold text-white/80 uppercase tracking-[0.2em]">
+                  {/* Label and Percentage — Bold All-Caps */}
+                  <div className="flex justify-between items-center mb-4 relative z-10">
+                    <span className="text-sm font-black text-white uppercase tracking-[0.1em] drop-shadow-sm">
                       {skill.name}
                     </span>
-                    <span className="text-[10px] font-medium text-white/30 font-mono tracking-tighter">
+                    <span className="text-sm font-black text-white tracking-tighter drop-shadow-sm">
                       {skill.level}%
                     </span>
                   </div>
 
-                  {/* Refined Progress Bar */}
-                  <div className="relative h-[4px] w-full bg-white/5 rounded-full overflow-hidden">
-                    <div className="absolute inset-0 bg-white/[0.01]" />
-                    
+                  {/* High-Contrast Neon Progress Bar */}
+                  <div className="relative h-1.5 w-full bg-slate-800/80 rounded-full overflow-hidden shadow-inner">
                     <motion.div
                       initial={{ width: 0 }}
                       whileInView={{ width: `${skill.level}%` }}
-                      transition={{ duration: 1.5, ease: [0.34, 1.56, 0.64, 1], delay: idx * 0.12 }}
+                      transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: idx * 0.15 }}
                       viewport={{ once: true }}
-                      className="h-full rounded-full relative overflow-hidden"
-                      style={{ 
-                        background: `linear-gradient(90deg, ${accent}aa 0%, #fff 100%)`, 
-                        boxShadow: `0 0 12px ${accent}33`
-                      }}
-                    >
-                      {/* Animated Shimmer */}
-                      <motion.div 
-                        animate={{ x: ['-200%', '200%'] }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[45deg]"
-                      />
-                    </motion.div>
+                      className="h-full rounded-full bg-[#02efff] shadow-[0_0_12px_rgba(2,239,255,0.6)]"
+                    />
                   </div>
                 </div>
               </motion.div>
             ))}
           </div>
-
-          {/* Bottom Corner Ambient Glow */}
-          <div 
-            className="absolute -bottom-32 -right-32 w-80 h-80 rounded-full blur-[120px] opacity-10"
-            style={{ background: accent }}
-          />
 
         </div>
       </GlareCard>

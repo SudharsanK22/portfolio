@@ -49,24 +49,41 @@ const LuxuryMesh = () => {
     uniform float uTime;
 
     void main() {
-      // Luxury palette: Deep midnight, Violet, Soft Navy
-      vec3 color1 = vec3(0.007, 0.007, 0.015); // Midnight Base
-      vec3 color2 = vec3(0.05, 0.02, 0.1);     // Deep Violet
-      vec3 color3 = vec3(0.02, 0.04, 0.08);    // Soft Navy
-      vec3 goldAccent = vec3(0.1, 0.08, 0.05); // Subtle Champagne Gold
+      // Sophisticated Palette: Midnight Obsidian, Deep Indigo, Subtle Electric Blue
+      vec3 colorDeep = vec3(0.02, 0.02, 0.05);  // Near black
+      vec3 colorIndigo = vec3(0.05, 0.05, 0.15); // Deep indigo
+      
+      // Diagonal gradient background
+      float gradMix = (vUv.y + vUv.x) * 0.5;
+      vec3 bgColor = mix(colorDeep, colorIndigo, gradMix);
 
-      // Blend based on UV and distortion
-      vec3 finalColor = color1;
-      finalColor = mix(finalColor, color2, vUv.x * (0.5 + 0.5 * sin(uTime * 0.1)));
-      finalColor = mix(finalColor, color3, vUv.y * (0.5 + 0.5 * cos(uTime * 0.15)));
+      // Create glowing contour lines based on noise distortion
+      // We want many fine, overlapping ribbons.
+      float lineVal1 = sin(vDistortion * 20.0 - uTime * 1.2);
+      float lines1 = smoothstep(0.92, 0.96, lineVal1);
       
-      // Add highlights on peaks
-      float highlight = smoothstep(0.3, 0.8, vDistortion);
-      finalColor = mix(finalColor, color2 * 1.5, highlight * 0.5);
+      float lineVal2 = sin((vDistortion + vUv.x * 0.1) * 25.0 + uTime * 0.8);
+      float lines2 = smoothstep(0.95, 0.98, lineVal2);
+
+      float lineVal3 = sin((vDistortion - vUv.y * 0.1) * 30.0 - uTime * 1.5);
+      float lines3 = smoothstep(0.96, 0.99, lineVal3);
+
+      vec3 lineColor = vec3(0.4, 0.6, 1.0); // Electric blue lines
+      vec3 highlight = vec3(0.8, 0.9, 1.0); // white-blue core
+
+      vec3 finalColor = bgColor;
       
-      // Add a touch of gold to the edges
-      float edge = smoothstep(0.0, 1.0, vUv.x) * smoothstep(1.0, 0.0, vUv.x);
-      finalColor += goldAccent * (1.0 - edge) * 0.1;
+      // Add fine ribbons
+      finalColor += lineColor * lines1 * 0.3;
+      finalColor += lineColor * lines2 * 0.3;
+      finalColor += lineColor * lines3 * 0.3;
+      
+      // High-intensity core for lines
+      finalColor += highlight * smoothstep(0.98, 1.0, lineVal1) * 0.4;
+      
+      // Add a broad, soft blue glow where distortion is high to mimic depth
+      float broadGlow = smoothstep(0.3, 0.8, vDistortion);
+      finalColor += vec3(0.2, 0.4, 0.8) * broadGlow * 0.15;
 
       gl_FragColor = vec4(finalColor, 1.0);
     }
@@ -100,9 +117,9 @@ const LuxuryMesh = () => {
 
 const LuxuryBackground = () => {
   return (
-    <div className="w-full h-full bg-[#020205]">
+    <div className="w-full h-full bg-[#0B001A]">
       <Canvas camera={{ position: [0, 2, 10], fov: 45 }}>
-        <color attach="background" args={['#020205']} />
+        <color attach="background" args={['#0B001A']} />
         <ambientLight intensity={0.5} />
         <LuxuryMesh />
       </Canvas>

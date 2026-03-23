@@ -1,23 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-import api from './api';
 import { LayoutDashboard, LogOut, Home, User, Briefcase, Mail, Zap } from 'lucide-react';
 
 const Navbar = () => {
-  const [brandName, setBrandName] = useState('Portfolio.');
+  const brandName = 'Sudharsan.';
   const { user, logout } = useAuth();
-
-  useEffect(() => {
-    api.get('/content/settings').then(res => {
-      if (res.data.brand_name) setBrandName(res.data.brand_name);
-    }).catch(console.error);
-  }, []);
 
   const publicLinks = [
     { name: 'Home', path: '/#home', icon: <Home size={20} /> },
-    { name: 'Profile', path: '/#profile', icon: <User size={20} /> },
-    { name: 'Work', path: '/#work', icon: <Briefcase size={20} /> },
+    { name: 'About', path: '/#about', icon: <User size={20} /> },
+    { name: 'Skills', path: '/#skills', icon: <Zap size={20} /> },
+    { name: 'Projects', path: '/#projects', icon: <Briefcase size={20} /> },
+    { name: 'Contact', path: '/#contact', icon: <Mail size={20} /> },
   ];
 
   return (
@@ -33,7 +28,7 @@ const Navbar = () => {
               key={link.path}
               to={link.path}
               className={({ isActive }) => 
-                `flex items-center gap-2 hover:text-primary-400 transition-colors ${isActive ? 'text-primary-400' : 'text-slate-300'}`
+                `flex items-center gap-2 hover:text-white transition-colors ${isActive ? 'text-white' : 'text-slate-400'}`
               }
             >
               {link.name}
@@ -42,8 +37,8 @@ const Navbar = () => {
         </div>
 
         {user ? (
-          <div className="flex items-center gap-4 border-l border-white/20 pl-6">
-            <NavLink to="/admin" className="text-slate-300 hover:text-primary-400 flex items-center gap-2">
+          <div className="flex items-center gap-4 border-l border-slate-800 pl-6">
+            <NavLink to="/admin" className="text-slate-400 hover:text-white flex items-center gap-2">
               <LayoutDashboard size={20} />
               <span className="hidden sm:inline">Admin</span>
             </NavLink>

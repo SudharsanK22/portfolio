@@ -19,11 +19,11 @@
 
 body {
   font-family: var(--font-family);
-  @apply bg-slate-950 text-slate-100;
+  @apply bg-slate-950 text-slate-300;
 }
 
 .glass {
-  @apply bg-white/10 backdrop-blur-md border border-white/20;
+  @apply bg-slate-900/50 backdrop-blur-md border border-slate-800;
 }
 
 .btn-primary {

@@ -76,6 +76,24 @@ async def delete_skill(skill_id: str, current_user: dict = Depends(get_current_u
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Skill not found")
     return {"message": "Skill deleted"}
+    
+@router.put("/skills/{skill_id}")
+async def update_skill(skill_id: str, skill: Skill, current_user: dict = Depends(get_current_user)):
+    db = await get_database()
+    if not ObjectId.is_valid(skill_id):
+        raise HTTPException(status_code=400, detail="Invalid skill ID format")
+    
+    data = skill.dict(by_alias=True)
+    if "_id" in data:
+        del data["_id"]
+        
+    result = await db.skills.update_one(
+        {"_id": ObjectId(skill_id)},
+        {"$set": data}
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Skill not found")
+    return {"message": "Skill updated"}
 
 # --- Projects ---
 @router.get("/projects", response_model=List[Project])

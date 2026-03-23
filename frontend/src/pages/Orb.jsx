@@ -1,5 +1,5 @@
-import { Mesh, Program, Renderer, Triangle, Vec3, Transform } from 'ogl';
-import { useEffect, useRef } from 'react';
+import { Mesh, Program, Renderer, Triangle, Vec3 } from 'ogl';
+import React, { useEffect, useRef, useState } from 'react';
 import './Orb.css';
 
 export default function Orb({
@@ -7,9 +7,12 @@ export default function Orb({
   hoverIntensity = 0.2,
   rotateOnHover = true,
   forceHoverState = false,
-  backgroundColor = '#000000'
+  backgroundColor = '#000000',
+  onClick,
+  isRevealed = false
 }) {
   const ctnDom = useRef(null);
+  const [shaking, setShaking] = useState(false);
 
   const vert = /* glsl */ `
     precision highp float;
@@ -209,9 +212,7 @@ export default function Orb({
       }
     });
 
-    const scene = new Transform();
     const mesh = new Mesh(gl, { geometry, program });
-    mesh.setParent(scene);
 
     function resize() {
       if (!container) return;
@@ -254,8 +255,29 @@ export default function Orb({
       targetHover = 0;
     };
 
+    const handleClick = (e) => {
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const width = rect.width;
+      const height = rect.height;
+      const size = Math.min(width, height);
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const uvX = ((x - centerX) / size) * 2.0;
+      const uvY = ((y - centerY) / size) * 2.0;
+
+      // Hit-test: click within the orb area
+      if (Math.sqrt(uvX * uvX + uvY * uvY) < 0.8) {
+        setShaking(true);
+        setTimeout(() => setShaking(false), 500);
+        if (onClick) onClick();
+      }
+    };
+
     container.addEventListener('mousemove', handleMouseMove);
     container.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('click', handleClick);
 
     let rafId;
     const update = t => {
@@ -263,7 +285,7 @@ export default function Orb({
       const dt = (t - lastTime) * 0.001;
       lastTime = t;
       program.uniforms.iTime.value = t * 0.001;
-      program.uniforms.hue.value = hue;
+      program.uniforms.hue.value = isRevealed ? hue + 140 : hue;
       program.uniforms.hoverIntensity.value = hoverIntensity;
       program.uniforms.backgroundColor.value = hexToVec3(backgroundColor);
 
@@ -275,7 +297,7 @@ export default function Orb({
       }
       program.uniforms.rot.value = currentRot;
 
-      renderer.render({ scene });
+      renderer.render({ scene: mesh });
     };
     rafId = requestAnimationFrame(update);
 
@@ -284,13 +306,20 @@ export default function Orb({
       window.removeEventListener('resize', resize);
       container.removeEventListener('mousemove', handleMouseMove);
       container.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('click', handleClick);
       container.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hue, hoverIntensity, rotateOnHover, forceHoverState, backgroundColor]);
 
-  return <div ref={ctnDom} className="orb-container" />;
+  return (
+    <div 
+      ref={ctnDom} 
+      className={`orb-container ${shaking ? 'shake-animation' : ''}`} 
+      style={{ cursor: 'pointer' }}
+    />
+  );
 }
 
 function hslToRgb(h, s, l) {

@@ -28,30 +28,30 @@ const Login = () => {
           <div className="p-3 bg-primary-600/20 rounded-full mb-4">
             <LogIn className="text-primary-500" size={32} />
           </div>
-          <h2 className="text-3xl font-bold">Admin Login</h2>
+          <h2 className="text-3xl font-bold text-white">Admin Login</h2>
           <p className="text-slate-400 mt-2">Manage your website content</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2 flex items-center gap-2">
+            <label className="block text-sm font-medium text-slate-400 mb-2 flex items-center gap-2">
               <User size={16} /> Username
             </label>
             <input
               type="text"
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
+              className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-white"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2 flex items-center gap-2">
+            <label className="block text-sm font-medium text-slate-400 mb-2 flex items-center gap-2">
               <Lock size={16} /> Password
             </label>
             <input
               type="password"
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
+              className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-white"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
