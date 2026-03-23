@@ -6,7 +6,7 @@ import shutil
 import os
 import uuid
 import logging
-from backend.database import settings, get_database
+from backend.database import settings, get_database, has_dns
 from backend.routes import auth, content
 from backend.auth import get_current_user
 
@@ -86,5 +86,10 @@ async def health_check():
         logger.error(f"Health check failed: {e}")
         return JSONResponse(
             status_code=503,
-            content={"status": "error", "database": str(e)}
+            content={
+                "status": "error", 
+                "database": str(e),
+                "has_dns_package": has_dns,
+                "mongodb_url_type": "srv" if "mongodb+srv" in settings.MONGODB_URL else "standard"
+            }
         )

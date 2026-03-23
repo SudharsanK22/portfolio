@@ -1,6 +1,11 @@
 import os
 import logging
 import certifi
+try:
+    import dns.resolver
+    has_dns = True
+except ImportError:
+    has_dns = False
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -31,8 +36,10 @@ try:
             logger.warning("RUNNING ON RENDER BUT MONGODB_URL IS SET TO LOCALHOST! Check your environment variables.")
         else:
             logger.info("Running on Render with external MONGODB_URL.")
+            if not has_dns and "mongodb+srv" in settings.MONGODB_URL:
+                logger.error("mongodb+srv URL detected but dnspython is NOT installed! SRV resolution will fail.")
     
-    logger.info(f"Database settings loaded. DATABASE_NAME={settings.DATABASE_NAME}")
+    logger.info(f"Database settings loaded. DATABASE_NAME={settings.DATABASE_NAME}, has_dns={has_dns}")
 except Exception as e:
     logger.error(f"Error initializing settings: {e}")
     class FallbackSettings:
