@@ -7,6 +7,12 @@ from backend.models import HomeContent, AboutContent, Skill, Project, ContactInf
 
 router = APIRouter(prefix="/content", tags=["content"])
 
+def serialize_doc(doc: dict) -> dict:
+    """Convert ObjectId _id to string so Pydantic/JSON serialization doesn't crash."""
+    if doc and "_id" in doc:
+        doc["_id"] = str(doc["_id"])
+    return doc
+
 # --- Home ---
 @router.get("/home", response_model=HomeContent)
 async def get_home():
@@ -56,7 +62,7 @@ async def update_about(content: AboutContent, current_user: dict = Depends(get_c
 async def get_skills():
     db = await get_database()
     skills = await db.skills.find().to_list(100)
-    return skills
+    return [serialize_doc(s) for s in skills]
 
 @router.post("/skills")
 async def add_skill(skill: Skill, current_user: dict = Depends(get_current_user)):
@@ -100,7 +106,7 @@ async def update_skill(skill_id: str, skill: Skill, current_user: dict = Depends
 async def get_projects():
     db = await get_database()
     projects = await db.projects.find().to_list(100)
-    return projects
+    return [serialize_doc(p) for p in projects]
 
 @router.post("/projects")
 async def add_project(project: Project, current_user: dict = Depends(get_current_user)):

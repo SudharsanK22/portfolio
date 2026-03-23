@@ -31,7 +31,6 @@ class MongoBaseModel(BaseModel):
     model_config = ConfigDict(
         populate_by_name=True,
         arbitrary_types_allowed=True,
-        json_encoders={ObjectId: str}
     )
 
 # Web Content Models

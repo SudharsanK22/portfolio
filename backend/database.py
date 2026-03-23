@@ -50,13 +50,20 @@ except Exception as e:
 
 # More robust client initialization
 try:
-    logger.info("Initializing AsyncIOMotorClient with certifi CA bundle...")
-    # Use certifi's CA bundle for secure connections to Atlas on Render/Linux
-    client = AsyncIOMotorClient(
-        settings.MONGODB_URL,
-        tlsCAFile=certifi.where(),
-        serverSelectionTimeoutMS=5000  # 5 second timeout for fail-fast
-    )
+    is_srv = "mongodb+srv" in settings.MONGODB_URL
+    if is_srv:
+        logger.info("Initializing AsyncIOMotorClient with TLS (SRV/Atlas URL detected)...")
+        client = AsyncIOMotorClient(
+            settings.MONGODB_URL,
+            tlsCAFile=certifi.where(),
+            serverSelectionTimeoutMS=5000,
+        )
+    else:
+        logger.info("Initializing AsyncIOMotorClient without TLS (standard URL, e.g. Railway)...")
+        client = AsyncIOMotorClient(
+            settings.MONGODB_URL,
+            serverSelectionTimeoutMS=5000,
+        )
     db = client[settings.DATABASE_NAME]
     logger.info(f"Database object initialized for database: {settings.DATABASE_NAME}")
 except Exception as e:
