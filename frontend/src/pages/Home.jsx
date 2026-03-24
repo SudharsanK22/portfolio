@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Github, Mail, User, Briefcase, Linkedin, Send, Phone } from 'lucide-react';
 import SkillCard from './SkillCard';
@@ -11,9 +11,70 @@ import rfid_demo from '../assets/rfid_demo.png';
 import iot_demo from '../assets/iot_demo.png';
 import resume_file from '../assets/Sudharsan  - SD.docx';
 
+// Custom dynamic cursor glow hook bridging CSS `--x`/`--y` variables
+const usePointerGlow = () => {
+  const [status, setStatus] = useState(null);
+  useEffect(() => {
+    const syncPointer = ({ clientX: pointerX, clientY: pointerY }) => {
+      const x = pointerX.toFixed(2);
+      const y = pointerY.toFixed(2);
+      const xp = (pointerX / window.innerWidth).toFixed(2);
+      const yp = (pointerY / window.innerHeight).toFixed(2);
+      document.documentElement.style.setProperty('--x', x);
+      document.documentElement.style.setProperty('--xp', xp);
+      document.documentElement.style.setProperty('--y', y);
+      document.documentElement.style.setProperty('--yp', yp);
+      setStatus({ x, y, xp, yp });
+    };
+    document.body.addEventListener('pointermove', syncPointer);
+    return () => {
+      document.body.removeEventListener('pointermove', syncPointer);
+    };
+  }, []);
+  return [status];
+};
+
 const Home = () => {
+  usePointerGlow(); // Initializes the dynamic CSS cursor tracking globally
+
   const containerRef = useRef(null);
   const [imgError, setImgError] = useState(false);
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactMessage, setContactMessage] = useState('');
+  const [isSent, setIsSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "a2d147a6-dc09-4ede-a581-2ffc2d859b6f",
+          email: contactEmail,
+          message: contactMessage,
+          subject: "New Portfolio Contact Message!"
+        }),
+      });
+      const result = await response.json();
+      if (result.success) {
+        setIsSent(true);
+        setContactEmail('');
+        setContactMessage('');
+        setTimeout(() => setIsSent(false), 5000);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="relative">
@@ -345,20 +406,20 @@ I am skilled in Python, SQL, HTML, CSS, JavaScript, and familiar with modern dev
             <div className="space-y-6">
               <h3 className="text-lg font-bold text-white tracking-wider uppercase">Contact Us</h3>
               <form 
-                action="mailto:sudharsan180302@gmail.com" 
-                method="POST" 
-                encType="text/plain"
+                onSubmit={handleContactSubmit}
                 className="space-y-4"
               >
                 <input 
                   type="email" 
-                  name="email"
+                  value={contactEmail}
+                  onChange={(e) => setContactEmail(e.target.value)}
                   placeholder="Your email address" 
                   required
                   className="w-full bg-slate-900/50 border border-slate-800 rounded-lg px-4 py-3.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all shadow-inner"
                 />
                 <textarea 
-                  name="message"
+                  value={contactMessage}
+                  onChange={(e) => setContactMessage(e.target.value)}
                   placeholder="Message..." 
                   required
                   rows={3}
@@ -366,9 +427,10 @@ I am skilled in Python, SQL, HTML, CSS, JavaScript, and familiar with modern dev
                 />
                 <button 
                   type="submit"
-                  className="bg-[#2eb8b8] hover:bg-[#259b9b] text-white text-sm font-medium py-2.5 px-6 rounded-lg transition-colors flex items-center gap-2 float-right"
+                  disabled={isSent || isSubmitting}
+                  className={`text-sm font-medium py-2.5 px-6 rounded-lg transition-colors flex items-center gap-2 float-right ${isSent ? 'bg-green-500 hover:bg-green-500 cursor-not-allowed shadow-lg shadow-green-500/20 text-white' : 'bg-[#2eb8b8] hover:bg-[#259b9b] text-white'}`}
                 >
-                  <Send size={16} /> Send
+                  {isSubmitting ? 'Sending...' : isSent ? 'Message Sent!' : <><Send size={16} /> Send</>}
                 </button>
               </form>
             </div>
