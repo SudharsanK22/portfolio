@@ -22,15 +22,13 @@ const Navbar = () => {
       <div className="flex items-center gap-8">
         <div className="hidden md:flex gap-6">
           {publicLinks.map(link => (
-            <NavLink
+            <a
               key={link.path}
-              to={link.path}
-              className={({ isActive }) => 
-                `flex items-center gap-2 hover:text-white transition-colors ${isActive ? 'text-white' : 'text-slate-400'}`
-              }
+              href={link.path}
+              className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
             >
               {link.name}
-            </NavLink>
+            </a>
           ))}
         </div>
       </div>

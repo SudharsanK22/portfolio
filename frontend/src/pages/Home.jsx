@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, Mail, User, Briefcase } from 'lucide-react';
+import { ExternalLink, Github, Mail, User, Briefcase, Linkedin, Send, Phone } from 'lucide-react';
 import SkillCard from './SkillCard';
 import ShinyText from './ShinyText';
 import ps_image from '../assets/ps_image.jpeg';
@@ -9,6 +9,7 @@ import robot_photo from '../assets/photo.jpg';
 import rfid_photo from '../assets/1.avif';
 import rfid_demo from '../assets/rfid_demo.png';
 import iot_demo from '../assets/iot_demo.png';
+import resume_file from '../assets/Sudharsan  - SD.docx';
 
 const Home = () => {
   const containerRef = useRef(null);
@@ -57,9 +58,10 @@ const Home = () => {
                 </p>
               </div>
             </motion.div>
-            <div className="flex gap-4 pt-4">
-              <a href="#about" className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">About Me</a>
-              <a href="#projects" className="px-8 py-3 border border-slate-700 hover:border-slate-500 rounded-lg transition-all text-slate-300 font-medium">View My Work</a>
+            <div className="flex flex-wrap gap-4 pt-4">
+              <a href={resume_file} target="_blank" rel="noreferrer" download="Sudharsan_Resume.docx" className="px-8 py-3 bg-teal-500 hover:bg-teal-400 text-white font-bold rounded-lg transition-colors shadow-lg shadow-teal-500/20 text-center">Download Resume</a>
+              <a href="#about" className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors text-center">About Me</a>
+              <a href="#projects" className="px-8 py-3 border border-slate-700 hover:border-slate-500 rounded-lg transition-all text-slate-300 font-medium text-center">View My Work</a>
             </div>
           </motion.div>
 
@@ -117,14 +119,14 @@ const Home = () => {
                 About Me <span className="text-slate-700 font-light">|</span> <span className="text-slate-400 text-xl font-normal italic">Robotics & Automation Engineer</span>
               </h2>
               
-              <div className="flex flex-col lg:flex-row gap-16 items-start">
+              <div className="flex flex-col lg:flex-row gap-16 items-stretch">
                 {/* Photo Column - Now on the Left */}
-                <div className="flex-1 w-full max-w-md lg:max-w-xl group">
-                  <div className="relative aspect-[4/5] rounded-[3rem] overflow-hidden border-2 border-white/10 shadow-3xl bg-slate-900 transition-transform duration-700 hover:scale-[1.02]">
+                <div className="flex-[0.8] w-full group">
+                  <div className="relative w-full h-full min-h-[300px] rounded-[3rem] overflow-hidden border-2 border-white/10 shadow-3xl bg-slate-900 transition-transform duration-700 hover:scale-[1.02]">
                     <img 
                       src={coding_bg} 
                       alt="Coding and Automation" 
-                      className="w-full h-full object-cover transition-all duration-700" 
+                      className="absolute inset-0 w-full h-full object-cover transition-all duration-700" 
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-60" />
                     
@@ -194,7 +196,6 @@ I am skilled in Python, SQL, HTML, CSS, JavaScript, and familiar with modern dev
             {/* HARDCODED TOOLS SECTION */}
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }}>
               <SkillCard category="Tools" skills={[
-                { name: "OpenCV", level: 85, category: "Tools" },
                 { name: "Arduino", level: 80, category: "Tools" },
                 { name: "Raspberry Pi", level: 80, category: "Tools" },
                 { name: "Docker", level: 75, category: "Tools" },
@@ -297,42 +298,94 @@ I am skilled in Python, SQL, HTML, CSS, JavaScript, and familiar with modern dev
         </div>
       </section>
 
-      {/* SECTION 4: CONTACT */}
-      <section id="contact" className="relative min-h-screen flex items-center justify-center py-24 overflow-hidden">
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-600/10 blur-[150px] rounded-full pointer-events-none" />
-        
-        <div className="relative z-10 max-w-4xl mx-auto px-6 w-full">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            className="text-center space-y-12"
-          >
-            <div className="space-y-4">
-              <h2 className="text-5xl font-bold text-white">Get In Touch</h2>
-              <p className="text-slate-400 text-xl">Let's work together on your next project.</p>
+      {/* SECTION 4: FOOTER / CONTACT */}
+      <footer id="contact" className="relative bg-slate-950 pt-20 pb-8 border-t border-slate-800 mt-24">
+        {/* Subtle background glow */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-600/5 blur-[120px] rounded-full pointer-events-none" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 mb-16">
+            
+            {/* Column 1: About & Info */}
+            <div className="space-y-6">
+              <h3 className="text-2xl font-black text-white tracking-tight">Sudharsan<span className="text-blue-500">.</span></h3>
+              <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
+                A passionate Robotics and Automation Engineer bridging the gap between hardware and software to build dynamic, intelligent systems. Let's build something truly inspiring together.
+              </p>
+              <div className="space-y-3 text-slate-300 text-sm pt-2">
+                <p className="flex items-center gap-3">
+                  <Mail size={18} className="text-slate-500" /> sudharsan180302@gmail.com
+                </p>
+                <p className="flex items-center gap-3">
+                  <Phone size={18} className="text-slate-500" /> +91 9080650635
+                </p>
+              </div>
+              <div className="flex gap-4 pt-4">
+                <a href="https://github.com/SudharsanK22" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition-all group" aria-label="GitHub">
+                  <Github size={18} className="group-hover:scale-110 transition-transform" />
+                </a>
+                <a href="https://www.linkedin.com/in/sudharsan-k-071950274/" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#0a66c2] hover:border-[#0a66c2] transition-all group" aria-label="LinkedIn">
+                  <Linkedin size={18} className="group-hover:scale-110 transition-transform" />
+                </a>
+              </div>
             </div>
 
-            <div className="grid md:grid-cols-1 gap-6 max-w-md mx-auto">
-                <a href="mailto:sudharsan@example.com" className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-slate-900 border border-slate-800 hover:border-blue-500/50 transition-all group">
-                  <div className="p-4 bg-blue-900/30 rounded-2xl text-blue-500 group-hover:scale-110 transition-transform"><Mail size={32} /></div>
-                  <div className="space-y-1">
-                    <p className="text-sm text-slate-500 uppercase tracking-widest font-bold">Email Me</p>
-                    <p className="text-xl font-medium text-white break-all">sudharsan180302@gmail.com</p>
-                  </div>
-                </a>
+            {/* Column 2: Quick Links */}
+            <div className="space-y-6 md:pl-12">
+              <h3 className="text-lg font-bold text-white tracking-wider uppercase">Quick Links</h3>
+              <ul className="space-y-4">
+                <li><a href="#home" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-slate-700" /> Home</a></li>
+                <li><a href="#about" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-slate-700" /> About Me</a></li>
+                <li><a href="#skills" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-slate-700" /> Tech Skills</a></li>
+                <li><a href="#projects" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-slate-700" /> Projects</a></li>
+              </ul>
             </div>
 
-            <div className="flex justify-center gap-6 flex-wrap">
-                <a href="https://github.com/SudharsanK22" target="_blank" rel="noreferrer" className="px-8 py-4 bg-slate-900 border border-slate-800 rounded-full hover:bg-slate-800 hover:border-slate-700 transition-all text-white font-medium">
-                  GitHub
-                </a>
-                <a href="https://www.linkedin.com/in/sudharsan-k-071950274/" target="_blank" rel="noreferrer" className="px-8 py-4 bg-slate-900 border border-slate-800 rounded-full hover:bg-slate-800 hover:border-slate-700 transition-all text-white font-medium">
-                  LinkedIn
-                </a>
+            {/* Column 3: Contact Form */}
+            <div className="space-y-6">
+              <h3 className="text-lg font-bold text-white tracking-wider uppercase">Contact Us</h3>
+              <form 
+                action="mailto:sudharsan180302@gmail.com" 
+                method="POST" 
+                encType="text/plain"
+                className="space-y-4"
+              >
+                <input 
+                  type="email" 
+                  name="email"
+                  placeholder="Your email address" 
+                  required
+                  className="w-full bg-slate-900/50 border border-slate-800 rounded-lg px-4 py-3.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all shadow-inner"
+                />
+                <textarea 
+                  name="message"
+                  placeholder="Message..." 
+                  required
+                  rows={3}
+                  className="w-full bg-slate-900/50 border border-slate-800 rounded-lg px-4 py-3.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all shadow-inner resize-none"
+                />
+                <button 
+                  type="submit"
+                  className="bg-[#2eb8b8] hover:bg-[#259b9b] text-white text-sm font-medium py-2.5 px-6 rounded-lg transition-colors flex items-center gap-2 float-right"
+                >
+                  <Send size={16} /> Send
+                </button>
+              </form>
             </div>
-          </motion.div>
+
+          </div>
+          
+          {/* Bottom Bar */}
+          <div className="pt-8 border-t border-slate-800/80 text-center md:flex md:justify-between md:items-center">
+            <p className="text-slate-500 text-xs">
+              © {new Date().getFullYear()} Sudharsan K. All rights reserved.
+            </p>
+            <p className="text-slate-600 text-xs mt-4 md:mt-0">
+              Designed dynamically with React & Tailwind
+            </p>
+          </div>
         </div>
-      </section>
+      </footer>
     </div>
   );
 };
