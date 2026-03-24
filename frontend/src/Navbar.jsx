@@ -1,11 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAuth } from './AuthContext';
-import { LayoutDashboard, LogOut, Home, User, Briefcase, Mail, Zap } from 'lucide-react';
+import { Home, User, Briefcase, Mail, Zap } from 'lucide-react';
 
 const Navbar = () => {
   const brandName = 'Sudharsan.';
-  const { user, logout } = useAuth();
 
   const publicLinks = [
     { name: 'Home', path: '/#home', icon: <Home size={20} /> },
@@ -35,22 +33,6 @@ const Navbar = () => {
             </NavLink>
           ))}
         </div>
-
-        {user ? (
-          <div className="flex items-center gap-4 border-l border-slate-800 pl-6">
-            <NavLink to="/admin" className="text-slate-400 hover:text-white flex items-center gap-2">
-              <LayoutDashboard size={20} />
-              <span className="hidden sm:inline">Admin</span>
-            </NavLink>
-            <button onClick={logout} className="text-red-400 hover:text-red-300">
-              <LogOut size={20} />
-            </button>
-          </div>
-        ) : (
-          <NavLink to="/login" className="text-slate-400 hover:text-white text-sm">
-            Admin Login
-          </NavLink>
-        )}
       </div>
     </nav>
   );

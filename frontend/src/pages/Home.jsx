@@ -1,62 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
-import api, { API_BASE_URL } from '../api';
+import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, Mail, Phone, MapPin, User } from 'lucide-react';
-import GradientText from './GradientText';
-import StarBorder from './StarBorder';
-import AnimatedContent from './AnimatedContent';
-import Orb from './Orb';
-import RainbowButton from './RainbowButton';
+import { ExternalLink, Github, Mail, User, Briefcase } from 'lucide-react';
 import SkillCard from './SkillCard';
-import VariableProximity from './VariableProximity';
 import ShinyText from './ShinyText';
 import ps_image from '../assets/ps_image.jpeg';
 import coding_bg from '../assets/coding_bg.png';
+import robot_photo from '../assets/photo.jpg';
+import rfid_photo from '../assets/1.avif';
+import iot_demo from '../assets/iot_demo.png';
 
 const Home = () => {
   const containerRef = useRef(null);
-  const [data, setData] = useState({ skills: [], projects: [] });
-  const [loading, setLoading] = useState(true);
   const [imgError, setImgError] = useState(false);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-
-  const handleTilt = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 22;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -22;
-    setTilt({ x, y });
-  };
-  const resetTilt = () => setTilt({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const fetchAll = async () => {
-        try {
-            const [skills, projects] = await Promise.all([
-                api.get('/content/skills'),
-                api.get('/content/projects')
-            ]);
-            setData({ 
-                skills: skills.data, 
-                projects: projects.data
-            });
-        } catch (err) {
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
-    fetchAll();
-  }, []);
-
-  // Group skills by category for the Skills section
-  const groupedSkills = data.skills.reduce((acc, skill) => {
-    const cat = skill.category || 'General';
-    if (!acc[cat]) acc[cat] = [];
-    acc[cat].push(skill);
-    return acc;
-  }, {});
-
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-xl font-medium">Building your experience...</div>;
 
   return (
     <div className="relative">
@@ -204,17 +159,51 @@ I am skilled in Python, SQL, HTML, CSS, JavaScript, and familiar with modern dev
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
-            {Object.entries(groupedSkills).map(([category, skills], idx) => (
-              <motion.div
-                key={category}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-              >
-                <SkillCard category={category} skills={skills} />
-              </motion.div>
-            ))}
+            
+            {/* HARDCODED LANGUAGES SECTION */}
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.0 }}>
+              <SkillCard category="Languages" skills={[
+                { name: "Python", level: 90, category: "Languages" },
+               
+                { name: "JavaScript", level: 90, category: "Languages" },
+                { name: "SQL", level: 85, category: "Languages" }
+              ]} />
+            </motion.div>
+
+            {/* HARDCODED FRONTEND SECTION */}
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
+              <SkillCard category="Frontend" skills={[
+                { name: "HTML", level: 95, category: "Frontend" },
+                { name: "CSS", level: 95, category: "Frontend" },
+                { name: "React", level: 90, category: "Frontend" },
+                { name: "Tailwind CSS", level: 85, category: "Frontend" },
+                { name: "Framer Motion", level: 80, category: "Frontend" }
+              ]} />
+            </motion.div>
+
+            {/* HARDCODED BACKEND SECTION */}
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}>
+              <SkillCard category="Backend" skills={[
+                { name: "FastAPI", level: 80, category: "Backend" },
+                { name: "MySQL", level: 85, category: "Backend" },
+                { name: "MongoDB", level: 80, category: "Backend" }
+              ]} />
+            </motion.div>
+
+            {/* HARDCODED TOOLS SECTION */}
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }}>
+              <SkillCard category="Tools" skills={[
+                { name: "OpenCV", level: 85, category: "Tools" },
+                { name: "Arduino", level: 80, category: "Tools" },
+                { name: "Raspberry Pi", level: 80, category: "Tools" },
+                { name: "Docker", level: 75, category: "Tools" },
+                { name: "Git", level: 90, category: "Tools" },
+                { name: "Linux", level: 80, category: "Tools" },
+                { name: "Figma", level: 85, category: "Tools" },
+                { name: "Canva", level: 85, category: "Tools" }
+              ]} />
+            </motion.div>
+
           </div>
         </div>
       </section>
@@ -233,50 +222,110 @@ I am skilled in Python, SQL, HTML, CSS, JavaScript, and familiar with modern dev
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {data.projects.map((project, idx) => (
-              <motion.div
-                key={project._id || idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="group relative bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all duration-500 rounded-3xl overflow-hidden"
-              >
-                <div className="aspect-video relative overflow-hidden bg-slate-950">
-                  {project.image_url ? (
-                    <img 
-                      src={`${API_BASE_URL}${project.image_url}`} 
-                      alt={project.title} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <Briefcase size={40} className="text-slate-700" />
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
-                    {project.link && (
-                      <a 
-                        href={project.link} 
-                        target="_blank" 
-                        rel="noreferrer" 
-                        className="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-500 transition-colors"
-                      >
-                        <ExternalLink size={20} />
-                      </a>
-                    )}
-                  </div>
+            {/* HARDCODED PROJECT 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="group relative bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all duration-500 rounded-3xl overflow-hidden"
+            >
+              <div className="aspect-video relative overflow-hidden bg-slate-950">
+                <img 
+                  src={rfid_photo} 
+                  alt="RFID-Based Traffic Violation Detection System" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6 gap-3">
+                  {/* GitHub Link */}
+                  <a href="#" target="_blank" rel="noreferrer" className="bg-slate-800 text-white p-3 rounded-full hover:bg-slate-700 transition-colors shadow-lg" title="View Source on GitHub">
+                    <Github size={20} />
+                  </a>
+                  {/* Demo URL Link */}
+                  <a href="#" target="_blank" rel="noreferrer" className="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-500 transition-colors shadow-lg" title="Live Demo">
+                    <ExternalLink size={20} />
+                  </a>
                 </div>
-                <div className="p-6 space-y-3">
-                  <h4 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors tracking-tight">
-                    {project.title}
-                  </h4>
-                  <p className="text-slate-400 text-sm line-clamp-2">
-                    {project.description}
-                  </p>
+              </div>
+              <div className="p-6 space-y-3">
+                <h4 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors tracking-tight">
+                  RFID-Based Traffic Violation Detection System
+                </h4>
+                <p className="text-slate-400 text-sm line-clamp-2">
+                  An automated system to detect traffic violations using RFID technology, integrated with hardware and software.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* HARDCODED PROJECT 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="group relative bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all duration-500 rounded-3xl overflow-hidden"
+            >
+              <div className="aspect-video relative overflow-hidden bg-slate-950">
+                <img 
+                  src={robot_photo} 
+                  alt="Autonomous Delivery Robot" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6 gap-3">
+                  {/* GitHub Link */}
+                  <a href="#" target="_blank" rel="noreferrer" className="bg-slate-800 text-white p-3 rounded-full hover:bg-slate-700 transition-colors shadow-lg" title="View Source on GitHub">
+                    <Github size={20} />
+                  </a>
+                  {/* Demo URL Link */}
+                  <a href="#" target="_blank" rel="noreferrer" className="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-500 transition-colors shadow-lg" title="Live Demo">
+                    <ExternalLink size={20} />
+                  </a>
                 </div>
-              </motion.div>
-            ))}
+              </div>
+              <div className="p-6 space-y-3">
+                <h4 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors tracking-tight">
+                  Autonomous Delivery Robot
+                </h4>
+                <p className="text-slate-400 text-sm line-clamp-2">
+                  A delivery robot that navigates autonomously using Aruco Marker Navigation, built with Python, OpenCV, and Raspberry Pi.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* HARDCODED PROJECT 3 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="group relative bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all duration-500 rounded-3xl overflow-hidden"
+            >
+              <div className="aspect-video relative overflow-hidden bg-slate-950">
+                <img 
+                  src={iot_demo} 
+                  alt="Smart IoT Automation Dashboard" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6 gap-3">
+                  {/* GitHub Link */}
+                  <a href="#" target="_blank" rel="noreferrer" className="bg-slate-800 text-white p-3 rounded-full hover:bg-slate-700 transition-colors shadow-lg" title="View Source on GitHub">
+                    <Github size={20} />
+                  </a>
+                  {/* Demo URL Link */}
+                  <a href="#" target="_blank" rel="noreferrer" className="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-500 transition-colors shadow-lg" title="Live Demo">
+                    <ExternalLink size={20} />
+                  </a>
+                </div>
+              </div>
+              <div className="p-6 space-y-3">
+                <h4 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors tracking-tight">
+                  Smart IoT Automation Dashboard
+                </h4>
+                <p className="text-slate-400 text-sm line-clamp-2">
+                  A high-performance modern web dashboard for monitoring smart home sensors seamlessly.
+                </p>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>

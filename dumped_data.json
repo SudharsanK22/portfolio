@@ -1,0 +1,84 @@
+{
+  "skills": [
+    {
+      "_id": "69c0cb82f183f43c45bb275e",
+      "name": "python",
+      "level": 80,
+      "category": "Language"
+    },
+    {
+      "_id": "69c0d0f4f183f43c45bb275f",
+      "name": "HTML",
+      "level": 80,
+      "category": "Frontend"
+    },
+    {
+      "_id": "69c0d0fef183f43c45bb2760",
+      "name": "CSS",
+      "level": 80,
+      "category": "Frontend"
+    },
+    {
+      "_id": "69c0d10af183f43c45bb2761",
+      "name": "Tailwind CSS",
+      "level": 80,
+      "category": "Frontend"
+    },
+    {
+      "_id": "69c0d116f183f43c45bb2762",
+      "name": "Javascript",
+      "level": 80,
+      "category": "Frontend"
+    },
+    {
+      "_id": "69c0d129f183f43c45bb2763",
+      "name": "mySQL",
+      "level": 80,
+      "category": "Database"
+    },
+    {
+      "_id": "69c0d138f183f43c45bb2764",
+      "name": "MongoDB",
+      "level": 80,
+      "category": "Database"
+    },
+    {
+      "_id": "69c0d143f183f43c45bb2765",
+      "name": "Figma",
+      "level": 80,
+      "category": "Tools"
+    },
+    {
+      "_id": "69c0d14ff183f43c45bb2766",
+      "name": "Canva",
+      "level": 80,
+      "category": "Tools"
+    },
+    {
+      "_id": "69c0d1a1f183f43c45bb2767",
+      "name": "Docker",
+      "level": 80,
+      "category": "Tools"
+    }
+  ],
+  "projects": [],
+  "content": [
+    {
+      "_id": "69beb0195543e41435ad238f",
+      "type": "home",
+      "about_me_label": "",
+      "hero_image": "/uploads/d6399772-af88-4030-89d2-b0cdccc1276f.jpeg",
+      "subtitle": "I build amazing things",
+      "title": "Welcome to My Portfolio",
+      "view_work_label": "About MeI am a passionate and detail-oriented IT professional with a Bachelor of Engineering in Robotics and Automation from Rajalakshmi Engineering College, along with a diploma in Mechatronics. I have a strong foundation in software development, embedded systems, and automation, with hands-on experience in building real-world projects.  I have developed projects such as an RFID-Based Traffic Violation Detection System and an Autonomous Delivery Robot using Aruco Marker Navigation, where I worked with technologies like Python, OpenCV, Arduino, Raspberry Pi, and MySQL. These experiences strengthened my ability to integrate hardware with software and solve practical problems efficiently.  I am skilled in Python, SQL, HTML, CSS, JavaScript, and familiar with modern development tools like PyCharm, Visual Studio, and Eclipse, along with Linux environments. My internship experience at TVS Sundram Fasteners Ltd. has helped me gain industry exposure and improve my teamwork, adaptability, and problem-solving skills.",
+      "welcome_text": "Hi, I'm Sudharsan"
+    },
+    {
+      "_id": "69c0ce735543e41435ad2390",
+      "type": "settings",
+      "brand_name": "Portfolio",
+      "projects_section_title": "Recent Work",
+      "skills_section_title": "Technical Skills"
+    }
+  ]
+}

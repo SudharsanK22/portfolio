@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 class Settings(BaseSettings):
     # Try to get from environment first, then .env, then default
-    MONGODB_URL: str = os.getenv("MONGODB_URL", "mongodb://mongo:xZIvHpgqEJPXiqBHVgEueEjgxBNsMvMp@centerbeam.proxy.rlwy.net:49839")
+    MONGODB_URL: str = os.getenv("MONGODB_URL", "mongodb://mongo:xZIvHpgqEJPXiqBHVgEueEjgxBNsMvMp@centerbeam.proxy.rlwy.net:49839").strip()
     DATABASE_NAME: str = os.getenv("DATABASE_NAME", "portfolio_cms")
     SECRET_KEY: str = os.getenv("SECRET_KEY", "YOUR_SUPER_SECRET_KEY_CHANGE_THIS")
     ALGORITHM: str = "HS256"
@@ -43,10 +43,13 @@ try:
 except Exception as e:
     logger.error(f"Error initializing settings: {e}")
     class FallbackSettings:
-        MONGODB_URL = os.getenv("MONGODB_URL", "mongodb://mongo:xZIvHpgqEJPXiqBHVgEueEjgxBNsMvMp@centerbeam.proxy.rlwy.net:49839")
+        MONGODB_URL = os.getenv("MONGODB_URL", "mongodb://mongo:xZIvHpgqEJPXiqBHVgEueEjgxBNsMvMp@centerbeam.proxy.rlwy.net:49839").strip()
         DATABASE_NAME = os.getenv("DATABASE_NAME", "portfolio_cms")
         SECRET_KEY = os.getenv("SECRET_KEY", "YOUR_SUPER_SECRET_KEY_CHANGE_THIS")
     settings = FallbackSettings()
+
+# Always strip the URL to remove any whitespace/newlines from env var copy-paste
+settings.MONGODB_URL = settings.MONGODB_URL.strip()
 
 # More robust client initialization
 try:

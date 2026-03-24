@@ -8,4 +8,11 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    host: true, // Listen on all local IPs
+    cors: true,
+    headers: {
+      "X-Frame-Options": "ALLOWALL",
+    }
+  }
 })
