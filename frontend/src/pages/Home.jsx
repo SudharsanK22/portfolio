@@ -7,6 +7,7 @@ import ps_image from '../assets/ps_image.jpeg';
 import coding_bg from '../assets/coding_bg.png';
 import robot_photo from '../assets/photo.jpg';
 import rfid_photo from '../assets/1.avif';
+import rfid_demo from '../assets/rfid_demo.png';
 import iot_demo from '../assets/iot_demo.png';
 
 const Home = () => {
@@ -249,48 +250,14 @@ I am skilled in Python, SQL, HTML, CSS, JavaScript, and familiar with modern dev
               </div>
               <div className="p-6 space-y-3">
                 <h4 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors tracking-tight">
-                  RFID-Based Traffic Violation Detection System
+                  Autonomous Food Delivery
                 </h4>
                 <p className="text-slate-400 text-sm line-clamp-2">
-                  An automated system to detect traffic violations using RFID technology, integrated with hardware and software.
+                  An automated food delivery system integrated with hardware and software for smart navigation.
                 </p>
               </div>
             </motion.div>
 
-            {/* HARDCODED PROJECT 2 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="group relative bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all duration-500 rounded-3xl overflow-hidden"
-            >
-              <div className="aspect-video relative overflow-hidden bg-slate-950">
-                <img 
-                  src={robot_photo} 
-                  alt="Autonomous Delivery Robot" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6 gap-3">
-                  {/* GitHub Link */}
-                  <a href="#" target="_blank" rel="noreferrer" className="bg-slate-800 text-white p-3 rounded-full hover:bg-slate-700 transition-colors shadow-lg" title="View Source on GitHub">
-                    <Github size={20} />
-                  </a>
-                  {/* Demo URL Link */}
-                  <a href="#" target="_blank" rel="noreferrer" className="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-500 transition-colors shadow-lg" title="Live Demo">
-                    <ExternalLink size={20} />
-                  </a>
-                </div>
-              </div>
-              <div className="p-6 space-y-3">
-                <h4 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors tracking-tight">
-                  Autonomous Delivery Robot
-                </h4>
-                <p className="text-slate-400 text-sm line-clamp-2">
-                  A delivery robot that navigates autonomously using Aruco Marker Navigation, built with Python, OpenCV, and Raspberry Pi.
-                </p>
-              </div>
-            </motion.div>
 
             {/* HARDCODED PROJECT 3 */}
             <motion.div
@@ -302,8 +269,8 @@ I am skilled in Python, SQL, HTML, CSS, JavaScript, and familiar with modern dev
             >
               <div className="aspect-video relative overflow-hidden bg-slate-950">
                 <img 
-                  src={iot_demo} 
-                  alt="Smart IoT Automation Dashboard" 
+                  src={rfid_demo} 
+                  alt="RFID-Based Traffic Violation Detection System" 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6 gap-3">
@@ -319,10 +286,10 @@ I am skilled in Python, SQL, HTML, CSS, JavaScript, and familiar with modern dev
               </div>
               <div className="p-6 space-y-3">
                 <h4 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors tracking-tight">
-                  Smart IoT Automation Dashboard
+                  RFID-Based Traffic Violation Detection System
                 </h4>
                 <p className="text-slate-400 text-sm line-clamp-2">
-                  A high-performance modern web dashboard for monitoring smart home sensors seamlessly.
+                  An automated system to detect traffic violations using RFID technology, integrated with hardware and software.
                 </p>
               </div>
             </motion.div>
